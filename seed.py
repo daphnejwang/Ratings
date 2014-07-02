@@ -23,11 +23,11 @@ def load_movies(session):
                 py_date = None
             else: 
                 py_date = datetime.strptime(row[2], "%d-%b-%Y")
-            title = row[1]
-            title = title.decode("latin-1")
-            movie = Movie(id=row[0], name=title, released_at=py_date, imdb_url=row[4])
+            title = row[1].split(" (")
+            movietitle = title[0].decode("latin-1")
+            movie = Movie(id=row[0], name=movietitle, released_at=py_date, imdb_url=row[4])
             s.add(movie)
-            s.commit()
+        s.commit()
 
 
 def load_ratings(session):

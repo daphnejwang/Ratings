@@ -3,6 +3,9 @@ from sqlalchemy import create_engine
 from sqlalchemy import Column, Integer, String
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.sqlite import DATETIME
+from sqlalchemy import ForeignKey
+from sqlalchemy.orm import relationship, backref
+
 
 ENGINE = None
 Session = None
@@ -37,10 +40,12 @@ class Rating(Base):
     __tablename__ = "ratings"
 
     id = Column(Integer, primary_key = True)
-    movie_id = Column(Integer, nullable = False)
-    user_id = Column(Integer, nullable = False)
+    movie_id = Column(Integer, ForeignKey('movies.id'), nullable = False)
+    user_id = Column(Integer, ForeignKey('users.id'))
     rating = Column(Integer, nullable = True)
 
+    user = relationship("User", backref=backref("ratings", order_by=id))
+    movie = relationship("Movie", backref=backref("ratings", order_by=id))
 
 ### End class declarations
 def connect():
