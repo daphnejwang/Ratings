@@ -5,12 +5,14 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.dialects.sqlite import DATETIME
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship, backref
+from sqlalchemy.orm import sessionmaker, scoped_session
 
-
-ENGINE = None
-Session = None
+engine = create_engine("sqlite:///ratings.db", echo=False)
+dbsession = scoped_session(sessionmaker(bind=engine, autocommit=False, autoflush=False))
 
 Base = declarative_base()
+Base.query = dbsession.query_property()
+
 # DateTime = DATETIME(
 #     storage_format="%(day)02d-%(month)03s-%(year)04d",
 #     regexp=r"(\d+)-(\w+)-(\d+)"
@@ -46,16 +48,6 @@ class Rating(Base):
 
     user = relationship("User", backref=backref("ratings", order_by=id))
     movie = relationship("Movie", backref=backref("ratings", order_by=id))
-
-### End class declarations
-def connect():
-    global ENGINE
-    global Session
-
-    ENGINE = create_engine("sqlite:///ratings.db", echo=True)
-    Session = sessionmaker(bind=ENGINE)
-
-    return Session()
 
 def createTable():
     Base.metadata.create_all(ENGINE)
