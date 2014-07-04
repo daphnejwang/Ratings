@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+<html>
+<h2>Movie Page for: "{{item.movie.name}}"</h2>
+
+    <p>Movie Name: <a href="">{{item.movie.name}}</a> </p>
+    <p>Movie Release Date: <a href="">{{item.movie.released_at}}</a></p>
+    <p>Movie Rating: {{item.rating}} </p>
+    <br><br>
+    {% if session.get('user') %}
+    <h3>How would you rate this movie?:</h3>
+    <label class="control-label" for="radios">Rate the Movie:</label>
+    <!-- <div class="controls">
+    <label class="radio inline" for="radios-0">
+        <input type="radio" name="radios" id="radios-0" value="1" checked="checked">
+        1
+    </label>
+    <label class="radio inline" for="radios-1">
+        <input type="radio" name="radios" id="radios-1" value="2">
+        2
+    </label>
+    <label class="radio inline" for="radios-2">
+        <input type="radio" name="radios" id="radios-2" value="3">
+        3
+    </label>
+    <label class="radio inline" for="radios-3">
+        <input type="radio" name="radios" id="radios-3" value="4">
+        4
+    </label>
+    <label class="radio inline" for="radios-4">
+        <input type="radio" name="radios" id="radios-4" value="5">
+        5
+    </label>
+  </div> -->
+  <form class="movie-rating" method="POST" action="/movies/{{item.movie.id}}">
+    <br />    
+        <input type = "radio" name = "rating" value = "1" id="radio-1">1</input>
+        <input type = "radio" name = "rating" value = "2" id="radio-2">2</input>
+        <input type = "radio" name = "rating" value = "3" id="radio-3">3</input>
+        <input type = "radio" name = "rating" value = "4" id="radio-4">4</input>
+        <input type = "radio" name = "rating" value = "5" id="radio-5">5</input></br>
+        <br>
+    <p><button type="btn btn-lg btn-primary btn-block" type="submit">Submit</button></p>
+</form>
+    {% endif %}
+</html>
+{% endblock %}
